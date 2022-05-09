@@ -16,8 +16,9 @@
 <body>
   <?php
     $dir_to_save = "users/";
+    $output_path = $dir_to_save ."users.txt";
     $user_errors = array("fnameErr" => false, "lnameErr" => false, "emailErr" => false, "telephoneErr" => false);
-    $user_data = array("fname" => "", "lname" => "", "email" => "", "telephone" => "", "topic" => "Business", "payment" => "Webmoney", "receiveEmail" => "yes");
+    $user_data = array(1, "fname" => "", "lname" => "", "email" => "", "telephone" => "", "topic" => "Business", "payment" => "Webmoney", "receiveEmail" => "yes");
     $error = false;
   
     if ($_POST) {
@@ -57,19 +58,17 @@
 
       $user_data["topic"] = test_input($_POST["topic"]);
       $user_data["payment"] = test_input($_POST["payment"]);
+      $user_data[] = date('l jS \of F Y h:i A');
+      $user_data[] = $_SERVER['REMOTE_ADDR'];
 
       if(!$error) {
-        $out = array();
-        
-        foreach($user_data as $key => $value) {
-          $out[] = $key.' '.$value."\n";
-        }
-
         if(!is_dir($dir_to_save)) {
           mkdir($dir_to_save);
         }
-    
-        file_put_contents(($dir_to_save.date("d-m-y_h-m-s").".txt"), $out);
+
+        $out = fopen($output_path, 'a');
+        fputcsv($out, $user_data);
+        fclose($out);
         header("Location: index.php?send=true");
       }
     }

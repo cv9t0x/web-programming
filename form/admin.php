@@ -43,46 +43,52 @@
 <body>
   <?php
     $dir_to_read = "users/";
+    $input_path = $dir_to_read . "users.txt";
     $users_data = array();
 
     if(is_dir($dir_to_read)) {
-      if($dh = opendir($dir_to_read)) {
-        while(($filename = readdir($dh)) !== false) {
-
-          if($filename === '.' || $filename === '..') {
-            continue;
+      if(($input = fopen($input_path, "r")) !== FALSE) {
+        while(($data = fgetcsv($input)) !== FALSE) {
+          if($data[0] == 1) {
+            $user_data = array();
+            $user_data["fname"] = $data[1];
+            $user_data["lname"] = $data[2];
+            $user_data["email"] = $data[3];
+            $user_data["telephone"] = $data[4];
+            $user_data["topic"] = $data[5];
+            $user_data["payment"] = $data[6];
+            $user_data["receiveEmail"] = $data[7];
+            $user_data["date"] = $data[8];
+            $user_data["ipAddress"] = $data[9];
+            array_push($users_data, $user_data);
           }
-
-          $user_data = array();
-
-          foreach(file($dir_to_read.$filename) as $line) {
-            list($key, $value) = explode(' ', $line, 2);
-
-            $user_data[$key] = $value;
-          }
-
-          $user_data["filename"] = $filename;
-          $users_data[] = $user_data;
         }
       }
-      closedir($dh);
     }
 
-    if ($_POST) {
+    if (!empty($_POST)) {
       $checkboxes = $_POST['check_list'];
 
       if(!empty($checkboxes) && !empty($users_data)) {
-        $new_users_data = array();
+        $counter = 0;
+        $old_users = file($input_path);
+        $input=fopen($input_path,"w");
 
-        foreach($users_data as $key => $value) {
-          if(!in_array($key, $checkboxes)) {
-            $new_users_data[] = $value;
+        foreach($old_users as $idx => $user) {
+          if($user[0] == 0) {
+            fwrite($input, $user);
+          } else if (in_array($counter, $checkboxes)) {
+            $user = substr_replace($user, 0, 0, 1);
+            fwrite($input, $user);
+            $counter += 1;
           } else {
-            unlink($dir_to_read.$users_data[$key]["filename"]);
-          }
+            fwrite($input, $user);
+            $counter += 1;
+          } 
         }
-
-        $users_data = $new_users_data;
+        
+        fclose($input);
+        header("Location: admin.php");
       }
     }
   ?>
@@ -109,6 +115,8 @@
               <th scope="col">Topic</th>
               <th scope="col">Payment</th>
               <th scope="col">Receive email</th>
+              <th scope="col">Date</th>
+              <th scope="col">Ip Address</th>
             </thead>
             <tbody>
               <?php foreach($users_data as $idx => $user_data) : ?>
@@ -117,7 +125,8 @@
                   <div class="form-check form-check-inline">
                     <input class="form-check-input" type="checkbox" id="<?php echo "checkbox".($idx + 1); ?>"
                       name="check_list[]" value="<?php echo $idx; ?>">
-                    <label class="form-check-label" for="<?php echo "checkbox".($idx + 1); ?>"><?php echo ($idx + 1); ?>
+                    <label class="form-check-label" for="<?php echo "checkbox".($idx + 1); ?>">
+                      <?php echo ($idx + 1); ?>
                     </label>
                   </div>
                 </td>
@@ -154,6 +163,16 @@
                 <td>
                   <span class="capitalize">
                     <?php echo $user_data["receiveEmail"]; ?>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <?php echo $user_data["date"]; ?>
+                  </span>
+                </td>
+                <td>
+                  <span>
+                    <?php echo $user_data["ipAddress"]; ?>
                   </span>
                 </td>
               </tr>

@@ -42,55 +42,19 @@
 
 <body>
   <?php
-    $dir_to_read = "users/";
-    $input_path = $dir_to_read . "users.txt";
-    $users_data = array();
+    include "./modules/Form.php";
 
-    if(is_dir($dir_to_read)) {
-      if(($input = fopen($input_path, "r")) !== FALSE) {
-        while(($data = fgetcsv($input)) !== FALSE) {
-          if($data[0] == 1) {
-            $user_data = array();
-            $user_data["fname"] = $data[1];
-            $user_data["lname"] = $data[2];
-            $user_data["email"] = $data[3];
-            $user_data["telephone"] = $data[4];
-            $user_data["topic"] = $data[5];
-            $user_data["payment"] = $data[6];
-            $user_data["receiveEmail"] = $data[7];
-            $user_data["date"] = $data[8];
-            $user_data["ipAddress"] = $data[9];
-            array_push($users_data, $user_data);
-          }
-        }
-      }
-    }
+    $form = new Form();
+    $users_data = $form->get();
 
-    if (!empty($_POST)) {
+    if ($form->is_post()) {
       $checkboxes = $_POST['check_list'];
+      $form->delete($checkboxes);
 
-      if(!empty($checkboxes) && !empty($users_data)) {
-        $counter = 0;
-        $old_users = file($input_path);
-        $input=fopen($input_path,"w");
-
-        foreach($old_users as $idx => $user) {
-          if($user[0] == 0) {
-            fwrite($input, $user);
-          } else if (in_array($counter, $checkboxes)) {
-            $user = substr_replace($user, 0, 0, 1);
-            fwrite($input, $user);
-            $counter += 1;
-          } else {
-            fwrite($input, $user);
-            $counter += 1;
-          } 
-        }
-        
-        fclose($input);
-        header("Location: admin.php");
-      }
+      header("Location: admin.php");
     }
+
+
   ?>
 
   <div class="container-md py-4">
@@ -132,47 +96,47 @@
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data["fname"]; ?>
+                    <?php echo $user_data[0]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data["lname"]; ?>
+                    <?php echo $user_data[1]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data["email"]; ?>
+                    <?php echo $user_data[2]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data["telephone"]; ?>
+                    <?php echo $user_data[3]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data["topic"]; ?>
+                    <?php echo $user_data[4]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data["payment"]; ?>
+                    <?php echo $user_data[5]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data["receiveEmail"]; ?>
+                    <?php echo $user_data[6]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data["date"]; ?>
+                    <?php echo $user_data[7]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data["ipAddress"]; ?>
+                    <?php echo $user_data[8]; ?>
                   </span>
                 </td>
               </tr>

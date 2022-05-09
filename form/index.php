@@ -15,152 +15,83 @@
 
 <body>
   <?php
-    $dir_to_save = "users/";
-    $output_path = $dir_to_save ."users.txt";
-    $user_errors = array("fnameErr" => false, "lnameErr" => false, "emailErr" => false, "telephoneErr" => false);
-    $user_data = array(1, "fname" => "", "lname" => "", "email" => "", "telephone" => "", "topic" => "Business", "payment" => "Webmoney", "receiveEmail" => "yes");
-    $error = false;
-  
-    if ($_POST) {
-      if (empty($_POST["fname"])) {
-        $user_errors["fnameErr"] = true;
-        $error = true;
-      } else {
-        $user_data["fname"] = test_input($_POST["fname"]);
-      }
+    include "./modules/Form.php";
 
-      if (empty($_POST["lname"])) {
-        $user_errors["lnameErr"] = true;
-        $error = true;
-      } else {
-        $user_data["lname"] = test_input($_POST["lname"]);
-      }
+    $form = new Form();
 
-      if (empty($_POST["email"])) {
-        $user_errors["emailErr"] = true;
-        $error = true;
-      } else {
-        $user_data["email"] = test_input($_POST["email"]);
-      }
-
-      if (empty($_POST["telephone"])) {
-        $user_errors["telephoneErr"] = true;
-        $error = true;
-      } else {
-        $user_data["telephone"] = test_input($_POST["telephone"]);
-      }
-
-      if (!empty($_POST["receiveEmail"])) {
-        $user_data["receiveEmail"] = "yes";
-      } else {
-        $user_data["receiveEmail"] = "no";
-      }
-
-      $user_data["topic"] = test_input($_POST["topic"]);
-      $user_data["payment"] = test_input($_POST["payment"]);
-      $user_data[] = date('l jS \of F Y h:i A');
-      $user_data[] = $_SERVER['REMOTE_ADDR'];
-
-      if(!$error) {
-        if(!is_dir($dir_to_save)) {
-          mkdir($dir_to_save);
-        }
-
-        $out = fopen($output_path, 'a');
-        fputcsv($out, $user_data);
-        fclose($out);
+    if ($form->is_post()){
+      $form->post($_POST);
+      if(!$form->is_error()) {
         header("Location: index.php?send=true");
       }
-    }
-
-    function test_input($value) {
-      $value = trim($value);
-      $value = stripslashes($value);
-      $value = htmlspecialchars($value);
-      return $value;
     }
   ?>
 
   <div class="container-md py-4">
     <div class="row justify-content-center">
       <div class="col col-lg-6">
+
         <?php if(isset($_GET['send']) && $_GET['send'] === 'true') : ?>
         <h2>Application was successfully accepted!</h2>
         <?php else : ?>
-        <form action="index.php" method="post">
+        <form action="index.php" method="post" autocomplete="off">
           <div class="mb-3 py-2">
             <h2>Next.js conference registration</h2>
           </div>
 
-          <?php if($error) : ?>
-          <div class="mb-2 text-danger">* required field</div>
-          <?php endif; ?>
+          <?= $form->is_error() ? '<div class="mb-2 text-danger">* required field</div>' : ""  ?>
 
           <div class="mb-3 row align-items-center">
             <div class="col-6">
               <label for="fname" class="form-label">First name</label>
 
-              <?php if($user_errors["fnameErr"]) : ?>
-              <span class="text-danger">*</span>
-              <?php else : ?>
-              <span>*</span>
-              <?php endif; ?>
+              <?= $form->is_invalid("fname") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
 
-              <input type="text" class="form-control" id="fname" name="fname" aria-describedby="firstName"
-                placeholder="Enter first name" value="<?php echo $user_data["fname"]; ?>" />
+              <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter first name"
+                value="<?= $form->get_value("fname"); ?>" />
             </div>
 
             <div class="col-6">
               <label for="lname" class="form-label">Last name</label>
 
-              <?php if($user_errors["lnameErr"]) : ?>
-              <span class="text-danger">*</span>
-              <?php else : ?>
-              <span>*</span>
-              <?php endif; ?>
+              <?= $form->is_invalid("lname") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
 
-              <input type="text" class="form-control" id="lname" name="lname" aria-describedby="lastName"
-                placeholder="Enter last name" value="<?php echo $user_data["lname"]; ?>" />
+              <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name"
+                value="<?= $form->get_value("lname"); ?>" />
             </div>
           </div>
 
           <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
 
-            <?php if($user_errors["emailErr"]) : ?>
-            <span class="text-danger">*</span>
-            <?php else : ?>
-            <span>*</span>
-            <?php endif; ?>
+            <?= $form->is_invalid("email") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
 
-            <input type="email" class="form-control" id="email" name="email" aria-describedby="email"
-              placeholder="Enter email address" value="<?php echo $user_data["email"]; ?>" />
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter email address"
+              value="<?= $form->get_value("email"); ?>" />
           </div>
 
           <div class="mb-3">
             <label for="telephone" class="form-label">Telephone</label>
 
-            <?php if($user_errors["telephoneErr"]) : ?>
-            <span class="text-danger">*</span>
-            <?php else : ?>
-            <span>*</span>
-            <?php endif; ?>
+            <?= $form->is_invalid("telephone") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
 
-            <input type="text" class="form-control" id="telephone" name="telephone" aria-describedby="telephone"
-              placeholder="Enter telephone" value="<?php echo $user_data["telephone"]; ?>" />
+            <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Enter telephone"
+              value="<?= $form->get_value("telephone"); ?>" />
           </div>
 
           <div class="mb-3">
             <label for="topic" class="form-label">Conference topic</label>
             <select class="form-select" id="topic" name="topic" aria-label="topic">
-              <option value="business" <?php echo ($user_data["topic"] === "business") ? "selected='selected'" : ""; ?>>
+              <option value="business"
+                <?= !$form->get_value("topic") || $form->get_value("topic") === "business" ? "selected='selected'" : ""; ?>>
                 Business
               </option>
               <option value="technology"
-                <?php echo ($user_data["topic"] === "technology") ? "selected='selected'" : ""; ?>>Technology
+                <?= $form->get_value("topic") === "technology" ? "selected='selected'" : ""; ?>>
+                Technology
               </option>
               <option value="advertisingMarketing"
-                <?php echo ($user_data["topic"] === "advertisingMarketing") ? "selected='selected'" : ""; ?>>
+                <?= $form->get_value("topic") === "advertisingMarketing" ? "selected='selected'" : ""; ?>>
                 Advertising &#38; Marketing</option>
             </select>
           </div>
@@ -169,31 +100,31 @@
             <label for="payment" class="form-label">Payment method</label>
             <select class="form-select" id="payment" name="payment" aria-label="payment">
               <option value="webmoney"
-                <?php echo ($user_data["payment"] === "webmoney") ? "selected='selected'" : ""; ?>>WebMoney
+                <?= !$form->get_value("payment") || $form->get_value("payment") === "webmoney" ? "selected='selected'" : ""; ?>>
+                WebMoney
               </option>
-              <option value="yandex" <?php echo ($user_data["payment"] === "yandex") ? "selected='selected'" : ""; ?>>
+              <option value="yandex" <?= $form->get_value("payment") === "yandex" ? "selected='selected'" : ""; ?>>
                 Yandex.Money
               </option>
-              <option value="paypal" <?php echo ($user_data["payment"] === "paypal") ? "selected='selected'" : ""; ?>>
+              <option value="paypal" <?= $form->get_value("payment") === "paypal" ? "selected='selected'" : ""; ?>>
                 Paypal
               </option>
-              <option value="card" <?php echo ($user_data["payment"] === "card") ? "selected='selected'" : ""; ?>>
+              <option value="card" <?= $form->get_value("payment") === "card" ? "selected='selected'" : ""; ?>>
                 Card
               </option>
             </select>
           </div>
 
           <div class="mb-3 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="receiveEmail" name="receiveEmail"
-              aria-describedby="receiveEmail" value="yes"
-              <?php echo $user_data["receiveEmail"] === "yes" ? "checked='checked'" : ""; ?> />
+            <input class="form-check-input" type="checkbox" id="receiveEmail" name="receiveEmail" value="yes"
+              <?= $form->get_value("receiveEmail") === "yes" || !$form->get_value("receiveEmail") ? "checked='checked'" : ""; ?> />
             <label class="form-check-label" for="receiveEmail">Do you want to receive the newsletter?</label>
           </div>
 
-          <button type="submit" class="btn btn-primary">Register</button>
+          <button type="submit" class="btn btn-primary">Send</button>
         </form>
+        <?php endif; ?>
       </div>
-      <?php endif; ?>
     </div>
   </div>
 

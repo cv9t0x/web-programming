@@ -20,7 +20,7 @@
     $form = new Form();
 
     if ($form->is_post()){
-      $form->post($_POST);
+      $form->submit($_POST);
       if(!$form->is_error()) {
         header("Location: index.php?send=true");
       }
@@ -82,8 +82,7 @@
           <div class="mb-3">
             <label for="topic" class="form-label">Conference topic</label>
             <select class="form-select" id="topic" name="topic" aria-label="topic">
-              <option value="business"
-                <?= !$form->get_value("topic") || $form->get_value("topic") === "business" ? "selected='selected'" : ""; ?>>
+              <option value="business" <?= $form->get_value("topic") === "business" ? "selected='selected'" : ""; ?>>
                 Business
               </option>
               <option value="technology"
@@ -99,8 +98,7 @@
           <div class="mb-3">
             <label for="payment" class="form-label">Payment method</label>
             <select class="form-select" id="payment" name="payment" aria-label="payment">
-              <option value="webmoney"
-                <?= !$form->get_value("payment") || $form->get_value("payment") === "webmoney" ? "selected='selected'" : ""; ?>>
+              <option value="webmoney" <?= $form->get_value("payment") === "webmoney" ? "selected='selected'" : ""; ?>>
                 WebMoney
               </option>
               <option value="yandex" <?= $form->get_value("payment") === "yandex" ? "selected='selected'" : ""; ?>>
@@ -117,7 +115,7 @@
 
           <div class="mb-3 form-check form-switch">
             <input class="form-check-input" type="checkbox" id="receiveEmail" name="receiveEmail" value="yes"
-              <?= $form->get_value("receiveEmail") === "yes" || !$form->get_value("receiveEmail") ? "checked='checked'" : ""; ?> />
+              <?= $form->get_value("receiveEmail") ? "checked='checked'" : ""; ?> />
             <label class="form-check-label" for="receiveEmail">Do you want to receive the newsletter?</label>
           </div>
 

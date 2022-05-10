@@ -48,13 +48,9 @@
     $users_data = $form->get();
 
     if ($form->is_post()) {
-      $checkboxes = $_POST['check_list'];
-      $form->delete($checkboxes);
-
+      $form->delete($_POST);
       header("Location: admin.php");
     }
-
-
   ?>
 
   <div class="container-md py-4">
@@ -87,56 +83,56 @@
               <tr>
                 <td>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="<?php echo "checkbox".($idx + 1); ?>"
-                      name="check_list[]" value="<?php echo $idx; ?>">
-                    <label class="form-check-label" for="<?php echo "checkbox".($idx + 1); ?>">
-                      <?php echo ($idx + 1); ?>
+                    <input class="form-check-input" type="checkbox" id="<?=" checkbox".($idx + 1); ?>"
+                      name="<?= $user_data["id"]; ?>">
+                    <label class="form-check-label" for="<?= "checkbox".($idx + 1); ?>">
+                      <?= ($idx + 1); ?>
                     </label>
                   </div>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data[0]; ?>
+                    <?= $user_data["fname"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data[1]; ?>
+                    <?= $user_data["lname"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data[2]; ?>
+                    <?= $user_data["email"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data[3]; ?>
+                    <?= $user_data["tel"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data[4]; ?>
+                    <?= $user_data["subject"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data[5]; ?>
+                    <?= $user_data["payment"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?php echo $user_data[6]; ?>
+                    <?= $user_data["mailing"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data[7]; ?>
+                    <?= $user_data["created_at"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?php echo $user_data[8]; ?>
+                    <?= $user_data["ip"]; ?>
                   </span>
                 </td>
               </tr>

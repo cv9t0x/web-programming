@@ -45,10 +45,10 @@
     include "./modules/Form.php";
 
     $form = new Form();
-    $users_data = $form->get();
+    $users_data = $form->get_data();
 
     if ($form->is_post()) {
-      $form->delete($_POST);
+      $form->delete_data($_POST);
       header("Location: admin.php");
     }
   ?>

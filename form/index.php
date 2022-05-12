@@ -73,24 +73,24 @@
           <div class="mb-3">
             <label for="telephone" class="form-label">Telephone</label>
 
-            <?= $form->is_invalid("telephone") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
+            <?= $form->is_invalid("tel") ? '<span class="text-danger">*</span>' : '<span>*</span>' ?>
 
             <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Enter telephone"
-              value="<?= $form->get_value("telephone"); ?>" />
+              value="<?= $form->get_value("tel"); ?>" />
           </div>
 
           <div class="mb-3">
-            <label for="topic" class="form-label">Conference topic</label>
-            <select class="form-select" id="topic" name="topic" aria-label="topic">
-              <option value="business" <?= $form->get_value("topic") === "business" ? "selected='selected'" : ""; ?>>
+            <label for="subject" class="form-label">Conference subject</label>
+            <select class="form-select" id="subject" name="subject" aria-label="subject">
+              <option value="business" <?= $form->get_value("subject") === "business" ? "selected='selected'" : ""; ?>>
                 Business
               </option>
               <option value="technology"
-                <?= $form->get_value("topic") === "technology" ? "selected='selected'" : ""; ?>>
+                <?= $form->get_value("subject") === "technology" ? "selected='selected'" : ""; ?>>
                 Technology
               </option>
               <option value="advertisingMarketing"
-                <?= $form->get_value("topic") === "advertisingMarketing" ? "selected='selected'" : ""; ?>>
+                <?= $form->get_value("subject") === "advertisingMarketing" ? "selected='selected'" : ""; ?>>
                 Advertising &#38; Marketing</option>
             </select>
           </div>
@@ -114,9 +114,9 @@
           </div>
 
           <div class="mb-3 form-check form-switch">
-            <input class="form-check-input" type="checkbox" id="receiveEmail" name="receiveEmail" value="yes"
-              <?= $form->get_value("receiveEmail") ? "checked='checked'" : ""; ?> />
-            <label class="form-check-label" for="receiveEmail">Do you want to receive the newsletter?</label>
+            <input class="form-check-input" type="checkbox" id="mailing" name="mailing" value="1"
+              <?= $form->get_value("mailing") ? "checked='checked'" : ""; ?> />
+            <label class="form-check-label" for="mailing">Do you want to receive the newsletter?</label>
           </div>
 
           <button type="submit" class="btn btn-primary">Send</button>

@@ -19,54 +19,51 @@ class Form {
       "fname" => "",
       "lname" => "",
       "email" => "",
-      "telephone" => "",
-      "topic" => "business",
+      "tel" => "",
+      "subject" => "business",
       "payment" => "webmoney",
-      "receiveEmail" => 1,
+      "mailing" => 1,
     );
     $this->database = new Database(
       'localhost',
       'cv9t',
       'qwerty123',
-      'form_db'
+      'form_db',
+      'participants'
     );
   }
 
-  private function fill($data) {
+  private function collect_data($data) {
     $this->user_data["fname"] = clean_input($data["fname"]);
     $this->user_data["lname"] = clean_input($data["lname"]);
     $this->user_data["email"] = clean_input($data["email"]);
-    $this->user_data["telephone"] = clean_input($data["telephone"]);
-    $this->user_data["topic"] = $data["topic"];
+    $this->user_data["tel"] = clean_input($data["telephone"]);
+    $this->user_data["subject"] = $data["subject"];
     $this->user_data["payment"] = $data["payment"];
-    $this->user_data["receiveEmail"] = $data["receiveEmail"] === "yes";
+    $this->user_data["mailing"] = $data["mailing"] === "1";
     $this->user_data[] = date("Y-m-d H:i:s");
     $this->user_data[] = $_SERVER['REMOTE_ADDR'];
   }
 
-  private function save() {
+  private function save_record() {
     $temp = [];
     foreach($this->user_data as $key => $value) {
       $temp[] = $value;
     }
-    $this->database->saveData($temp);
+    $this->database->save_data($temp);
   }
 
   public function submit($data) {
-    $this->fill($data);
+    $this->collect_data($data);
     if(!$this->is_error()) {
-      $this->save();
+      $this->save_record();
     }
   }
 
-  public function delete($indexes) {
+  public function delete_record($indexes) {
     foreach($indexes as $key => $value) {
-      $this->database->deleteData($key);
+      $this->database->delete_data($key);
     }
-  }
-
-  public function get() {
-    return $this->database->getData();
   }
 
   public function is_post() {
@@ -90,5 +87,10 @@ class Form {
 
   public function get_value($field) {
     return $this->user_data[$field] ?? "";
+  }
+
+  
+  public function get_users() {
+    return $this->database->getData();
   }
 }

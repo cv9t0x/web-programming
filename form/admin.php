@@ -1,3 +1,11 @@
+<?php
+include_once "./scripts/autoLogout.php";
+
+if (!isset($_SESSION['isAdmin'])) {
+  header('Location: ./login.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -42,24 +50,76 @@
 
 <body>
   <?php
-    include "./modules/Form.php";
+  error_reporting(E_ALL);
+  ini_set('display_errors', 1);
 
-    $form = new Form();
-    $users_data = $form->get_data();
+  include_once './modules/Participant.php';
+  include_once './modules/Statistic.php';
 
-    if ($form->is_post()) {
-      $form->delete_data($_POST);
-      header("Location: admin.php");
+  $participant = new Participant();
+  $statistic = new Statistic();
+
+  $participants = $participant->getAll();
+  $numberOfUniqueIps = $statistic->getNumberOfUniqueIps();
+  $numberOfHits = $statistic->getNumberOfHits();
+  $numberOfSessions = $statistic->getNumberOfSessions();
+
+  if ($_POST && !empty($_POST)) {
+    $ids = $_POST;
+
+    foreach ($ids as $id => $value) {
+      $participant->delete($id);
     }
+
+    header("Location: admin.php");
+  }
   ?>
 
   <div class="container-md py-4">
     <div class="row justify-content-center">
       <div class="col-12">
+        <div class="mb-3 row row-cols-auto justify-content-between">
+          <div class="col">
+            <a type="button" class="btn btn-primary mb-0" href="./index.php">
+              Exit administrator mode
+            </a>
+          </div>
+          <div class="col">
+            <a type="button" class="btn btn-primary mb-0" href="./scripts/logout.php">
+              Log out
+            </a>
+          </div>
+        </div>
 
-        <?php if(empty($users_data)): ?>
+        <div class="mb-3">
+          <h2>Statistic</h5>
+        </div>
+
+        <table class="table table-bordered mb-3">
+          <thead>
+            <th scope="col">Number of unique ips</th>
+            <th scope="col">Number of hits</th>
+            <th scope="col">Number of sessions</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <?= $numberOfUniqueIps ?>
+              </td>
+              <td>
+                <?= $numberOfHits ?>
+              </td>
+              <td>
+                <?= $numberOfSessions ?>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <?php if (empty($participants)) : ?>
         <h2>No members so far</h2>
         <?php else : ?>
+
         <form action="admin.php" method="post">
           <div class="mb-3">
             <h2>Table of members</h2>
@@ -79,60 +139,60 @@
               <th scope="col">Ip Address</th>
             </thead>
             <tbody>
-              <?php foreach($users_data as $idx => $user_data) : ?>
+              <?php foreach ($participants as $idx => $participant) : ?>
               <tr>
                 <td>
                   <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id="<?=" checkbox".($idx + 1); ?>"
-                      name="<?= $user_data["id"]; ?>">
-                    <label class="form-check-label" for="<?= "checkbox".($idx + 1); ?>">
+                    <input class="form-check-input" type="checkbox" id="<?= " checkbox" . ($idx + 1); ?>"
+                      name="<?= $participant["id"]; ?>">
+                    <label class="form-check-label" for="<?= "checkbox" . ($idx + 1); ?>">
                       <?= ($idx + 1); ?>
                     </label>
                   </div>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?= $user_data["fname"]; ?>
+                    <?= $participant["fname"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?= $user_data["lname"]; ?>
+                    <?= $participant["lname"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?= $user_data["email"]; ?>
+                    <?= $participant["email"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?= $user_data["tel"]; ?>
+                    <?= $participant["tel"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?= $user_data["subject"]; ?>
+                    <?= $participant["subject"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?= $user_data["payment"]; ?>
+                    <?= $participant["payment"]; ?>
                   </span>
                 </td>
                 <td>
                   <span class="capitalize">
-                    <?= $user_data["mailing"]; ?>
+                    <?= $participant["mailing"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?= $user_data["created_at"]; ?>
+                    <?= $participant["created_at"]; ?>
                   </span>
                 </td>
                 <td>
                   <span>
-                    <?= $user_data["ip"]; ?>
+                    <?= $participant["ip"]; ?>
                   </span>
                 </td>
               </tr>

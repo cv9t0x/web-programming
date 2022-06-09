@@ -7,6 +7,19 @@ class Statistic extends dbh
   public function __construct()
   {
     parent::__construct();
+    $this->create();
+  }
+
+  private function create()
+  {
+    $sql = "CREATE TABLE IF NOT EXISTS `statistics` (
+      `id` INT(10) NOT NULL AUTO_INCREMENT,
+      `ip` VARCHAR(255) NOT NULL,
+      `hits` INT(10) NOT NULL,
+      `last_seen` DATETIME NOT NULL,
+      PRIMARY KEY(`id`)
+    );";
+    $this->connect()->query($sql);
   }
 
   public function addHit($ip, $date)
@@ -44,35 +57,4 @@ class Statistic extends dbh
     return $res[0] ?? 0;
   }
 
-  // public function addHit($date)
-  // {
-  //   $sql = "SELECT `hits` FROM `statistics` WHERE `date`='$date';";
-  //   $hitsNum = count($this->connect()->query($sql)->fetchAll());
-
-  // if ($hitsNum > 0) {
-  //   $sql = "UPDATE `statistics` SET `hits`=`hits`+1 WHERE `date`='$date';";
-  // } else {
-  //   $sql = "INSERT INTO `statistics` SET `hits`=1, `date`='$date';";
-  // }
-
-  //   $this->connect()->query($sql);
-
-  //   // SET `hits`=`hits`+1 
-  // }
-
-  // public function getNumberOfHitsByDate($date)
-  // {
-  //   $sql = "SELECT `hits` FROM `statistics` WHERE `date`='$date';";
-  //   $res = $this->connect()->query($sql)->fetch();
-
-  //   return $res['hits'];
-  // }
-
-  // public function getNumberOfUniqueIpsByDate($date)
-  // {
-  //   $sql = "SELECT COUNT(DISTINCT `ip`) FROM `participants` WHERE `created_at`='$date';";
-  //   $res = $this->connect()->query($sql)->fetch();
-
-  //   return $res[0];
-  // }
 }

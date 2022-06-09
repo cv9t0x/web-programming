@@ -7,6 +7,26 @@ class Participant extends dbh
   public function __construct()
   {
     parent::__construct();
+    $this->create();
+  }
+
+  private function create()
+  {
+    $sql = "CREATE TABLE IF NOT EXISTS `participants` (
+      `id` INT(10) NOT NULL AUTO_INCREMENT,
+      `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+      `fname` VARCHAR(255) NOT NULL,
+      `lname` VARCHAR(255) NOT NULL,
+      `email` VARCHAR(255) NOT NULL,
+      `tel` VARCHAR(255) NOT NULL,
+      `subject` VARCHAR(255) NOT NULL,
+      `payment` VARCHAR(255) NOT NULL,
+      `mailing` TINYINT(1) UNSIGNED NOT NULL DEFAULT 1,
+      `created_at` TIMESTAMP NOT NULL,
+      `ip` VARCHAR(255) NOT NULL,
+      PRIMARY KEY(`id`)
+    );";
+    $this->connect()->query($sql);
   }
 
   public function save($data)

@@ -33,7 +33,7 @@ class ParticipantForm extends Form
     $this->data["tel"] = cleanInput($data["telephone"]);
     $this->data["subject"] = $data["subject"];
     $this->data["payment"] = $data["payment"];
-    $this->data["mailing"] = $data["mailing"] == "1" ? 1 : 0;
+    $this->data["mailing"] = isset($data["mailing"]) ? 1 : 0;
     $this->data[] = date("Y-m-d");
     $this->data[] = $_SERVER['REMOTE_ADDR'];
   }

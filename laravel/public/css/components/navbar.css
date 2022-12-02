@@ -1,0 +1,27 @@
+.nav {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    height: 100%;
+    padding: 20px 7px;
+    background-color:orange;
+}
+
+.nav-item {
+    margin-bottom: 10px;
+    padding: 5px 0;
+}
+
+.nav-item
+button {
+    background-color: transparent;
+    text-align: left;
+    padding: 0;
+    width: 100%;
+}
+
+.nav-link_active {
+    color:ghostwhite !important;
+    font-weight: 600;
+}

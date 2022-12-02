@@ -1,0 +1,13 @@
+.settings-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 30px;
+    border-radius: 15px;
+    background-color:ghostwhite;
+    width: 400px;
+}

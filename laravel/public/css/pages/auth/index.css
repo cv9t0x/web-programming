@@ -1,0 +1,44 @@
+.login-block {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 30px;
+    border-radius: 15px;
+    background-color:ghostwhite;
+}
+
+.login-block
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form--form-item {
+    margin-bottom: 15px;
+}
+
+.login-block--title {
+    align-self: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.login-form--form-item
+.login-form--form-item-name {
+    margin-bottom: 7px;
+}
+
+.submit-button {
+    margin-top: 10px;
+    margin-bottom: 15px;
+    background-color: orange;
+    color: white;
+    font-weight: 600;
+}
+
+.login-block--link-block a {
+    color: orange;
+}
+
+.login-block--link-block > div {
+    margin-bottom: 5px;
+}

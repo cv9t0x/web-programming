@@ -1,0 +1,14 @@
+@import './components/navbar.css';
+@import './layout/index.css';
+@import './common/index.css';
+@import './pages/app/index.css';
+@import './pages/auth/index.css';
+
+
+html, body {
+    height: 100%;
+}
+
+.root-container {
+    height: 100%;
+}

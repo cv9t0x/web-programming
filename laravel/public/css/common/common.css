@@ -1,0 +1,42 @@
+* {
+    font-family: 'Roboto', 'sans-serif';
+    font-size: 16px;
+}
+
+button {
+    padding: 5px 12px;
+    border-radius: 5px;
+}
+
+.none {
+    display: none;
+}
+
+.collapse-button {
+    color: orange;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+input {
+    border-radius: 5px;
+    padding: 3px 8px;
+    border: 1px solid orange;
+}
+
+input:focus {
+    border-width: 2px;
+}
+
+.field-block {
+    margin-bottom: 15px;
+}
+
+.mb-10 {
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}

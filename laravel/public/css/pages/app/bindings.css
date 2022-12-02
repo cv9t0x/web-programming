@@ -1,0 +1,38 @@
+.bindings-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 70%;
+    height: 100%;
+}
+
+.bindings-list {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+    width: 50%;
+}
+
+.binding-block {
+    background-color: ghostwhite;
+    padding: 10px 15px;
+    border-radius: 15px;
+    margin: 15px;
+    display: flex;
+    flex-direction: row;
+}
+
+.binding-block
+form:first-child {
+    width: 90%;
+}
+
+.binding-password-block {
+    margin: 15px 0;
+}
+
+.collapse-button-password {
+    color: orange;
+    font-size: 12px;
+    cursor: pointer;
+}

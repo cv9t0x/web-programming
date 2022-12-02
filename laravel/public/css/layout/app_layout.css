@@ -1,0 +1,11 @@
+.app-layout-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    height: 100%;
+}
+
+.app-content--inner {
+    width: calc(100% - 80px);
+    padding: 20px 50px;
+}
